@@ -1,6 +1,11 @@
 <template>
     <div class="navbar">
-        <router-link v-for="name in pageNames" :key="name" :to="{ name: name }">{{ name }}</router-link>
+        <button @click="toggleMenu" class="hamburger-btn">
+            ☰
+        </button>
+        <div :class="{ 'hidden': !showMenu }">
+            <router-link v-for="name in pageNames" :key="name" :to="{ name: name }">{{ name }}</router-link>
+        </div>
     </div>
 </template>
 
@@ -15,11 +20,18 @@ export default {
                 'My Profile',
                 'Messaging',
                 'Settings'
-            ]
+            ],
+            showMenu: false
         };
+    },
+    methods: {
+        toggleMenu() {
+            this.showMenu = !this.showMenu;
+        }
     }
 }
 </script>
+
 
 <style>
 
@@ -58,5 +70,59 @@ div.navbar a.router-link-active {
     color: #ffffff;
 }
 
+.hamburger-btn {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #ecf0f1;
+    display: none;  /* Initially hidden */
+}
+
+.hidden {
+    display: none;
+}
+
+.hamburger-btn {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #ecf0f1;
+    display: none;  /* Initially hidden on larger screens */
+    align-self: center;
+    margin-right: auto;
+}
+
+/* Menu Container (Holds the links) */
+div.navbar > div {
+    display: flex;  /* By default, it should display on larger screens */
+    flex-wrap: wrap;  /* Allow links to wrap if they don't fit */
+}
+
+/* Media query for mobile view */
+@media (max-width: 768px) {
+    div.navbar {
+        flex-direction: column;
+        align-items: flex-start;  /* Align to the start (left) */
+        padding-left: 15px;  /* Give some space from the left */
+    }
+
+    .hamburger-btn {
+        display: block;  /* Show the button on small screens */
+        align-self: flex-start;  /* Align the button to the start (left) */
+    }
+
+    div.navbar > div {
+        width: 100%;  /* Take the full width of its parent */
+        display: none;  /* Hide the links initially */
+    }
+
+    div.navbar > div:not(.hidden) {
+        display: flex;  /* Show the links when showMenu is true */
+        flex-direction: column;
+        width: 100%;
+    }
+}
 
 </style>
