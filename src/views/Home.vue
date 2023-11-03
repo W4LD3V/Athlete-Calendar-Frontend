@@ -109,8 +109,8 @@ export default {
                 matchesCriteria = false;
             }
             if (data.date) {
-                const eventStart = event.date[0];
-                const eventEnd = event.date[1];
+                const eventStart = event.date_start;
+                const eventEnd = event.date_end;
                 const searchStartDate = data.date[0];
                 const searchEndDate = data.date[1] + 86399;
   
@@ -142,3 +142,13 @@ export default {
   },
 };
 </script>
+
+<style>
+#app, #modals {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+</style>

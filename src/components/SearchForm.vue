@@ -35,7 +35,7 @@
                     {{ organizer }}
                 </option>
         </select>
-        <input type="submit">
+        <input type="submit" value="Search">
     </form>
 </template>
 
@@ -62,8 +62,6 @@ export default {
 
         const filterEventOrganizers = () => {
             organizers.value = [...new Set(props.eventData.map(event => event.organizer))];
-            // console.log(props.eventData);
-            // console.log(activityTypes.value);
         };
 
         const filterEventTypes = () => {
@@ -112,10 +110,41 @@ export default {
             }
         };
 
+        const fetchOrganizerNames = async () => {
+            const uniqueOrganizerIds = [...new Set(props.eventData.map(event => event.organizer_id))];
+            const organizerNames = [];
+
+            for (const id of uniqueOrganizerIds) {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch(`${process.env.VUE_APP_API_URL}/organizer/${id}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Failed to fetch organizer name");
+                    }
+
+                    const data = await response.json();
+                    organizerNames.push(data.name);
+                } catch (error) {
+                    console.error("Error fetching organizer name:", error);
+                    // Handle error appropriately
+                }
+            }
+
+            organizers.value = organizerNames;
+        };
+
+
         watch(() => props.eventData, () => {
             // console.log("eventData changed!");
             filterEventOrganizers();
             filterEventTypes();
+            fetchOrganizerNames();
         }, { immediate: true });
 
         return {

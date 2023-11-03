@@ -1,67 +1,86 @@
 <template>
     <div class="events-container">
-        <ul class="events-list">
-            <li class="event-item" v-for="event in eventData" :key="event.title">
-                <div class="event-content">
-                    <h1 class="event-title">{{ event.title }}</h1>
-                    <p class="event-date">{{ formatDate(event.date_start, event.date_end) }}</p>
-                    <p class="event-location">{{ event.location }}</p>
-                    <p class="event-type">{{ event.activitytype }}</p>
-                    <p class="event-organizer">{{ event.organizer }}</p>
-                    <div class="button-container">
-                        <button class="event-delete" @click="emitDeleteEvent(event.title)">Save</button>
-                        <router-link :to="{ name: 'EventDetails', params: { id: event.id } }">Details</router-link>
-                    </div>
-                </div>
-            </li>
-        </ul>
+        <table class="events-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Category</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="event-item" v-for="event in eventData" :key="event.title">
+                    <td class="event-title">{{ event.title }}</td>
+                    <td class="event-date">{{ formatDate(event.date_start, event.date_end) }}</td>
+                    <td class="event-location">{{ event.location }}</td>
+                    <td class="event-type">{{ event.activitytype }}</td>
+                    <td class="button-container">
+                        <button class="event-save" 
+                                :class="{ 'saved-event': savedEvents[event.id] }" 
+                                @click="toggleSave(event.id)">
+                            {{ savedEvents[event.id] ? 'Saved ✓' : 'Save' }}
+                        </button>
+                        <router-link class="event-details-link" :to="{ name: 'EventDetails', params: { id: event.id } }">Details</router-link>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
+
 <script>
 import { ref, toRefs } from 'vue';
+import useDateFormat from '@/composables/useDateFormat';
+import { useStore } from 'vuex';
+import { onMounted } from 'vue';
+import useSavedEvents from '@/composables/useSavedEvents';
+import useSaveUnsaveEvents from '@/composables/useSaveUnsaveEvents';
 
 export default {
     props: ['eventData', 'toggleDeleteModal'],
     setup(props, { emit }) {
-        const { eventData } = toRefs(props); // Convert props to reactive refs
+        const { eventData } = toRefs(props);
+        const store = useStore();
+        const localSavedEvents = ref({}); // An object to track saved events locally
 
-        const emitDeleteEvent = (title) => {
-            emit('deleteEvent', title);
+        const { saveEvent, unsaveEvent } = useSaveUnsaveEvents();
+
+        const toggleSave = async (eventId) => {
+            if (savedEvents.value[eventId]) {
+                const unsaved = await unsaveEvent(eventId);
+                if (unsaved) {
+                    // Set the event as unsaved locally
+                    delete savedEvents.value[eventId];
+                }
+            } else {
+                const saved = await saveEvent(eventId);
+                if (saved) {
+                    // Set the event as saved locally
+                    savedEvents.value[eventId] = true;
+                }
+            }
         }
 
-        const formatDate = (timestampStart, timestampEnd) => {
-            const startObj = new Date(timestampStart * 1000);
-            const endObj = new Date(timestampEnd * 1000);
-            
-            const formatDate = (dateObj) => {
-                const year = dateObj.getFullYear();
-                const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-                const day = String(dateObj.getDate()).padStart(2, '0');
-                return `${year}-${month}-${day}`;
-            }
 
-            const formatTime = (dateObj) => {
-                const hours = String(dateObj.getHours()).padStart(2, '0');
-                const minutes = String(dateObj.getMinutes()).padStart(2, '0');
-                return `${hours}:${minutes}`;
-            }
+        const { formatDate } = useDateFormat();
 
-            const getWeekday = (dateObj) => {
-                const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                return weekdays[dateObj.getDay()];
-            }
-            
-            // console.log("Events received in EventsList:", eventData.value);
-            return `${formatDate(startObj)} (${getWeekday(startObj)}) | ${formatTime(startObj)} - ${formatTime(endObj)}`;
-        }
+        const { savedEvents, fetchSavedEvents } = useSavedEvents();
+
+        onMounted(fetchSavedEvents);
 
         return {
             eventData,
-            emitDeleteEvent,
+            saveEvent,
             formatDate,
+            savedEvents,
+            toggleSave,
+            unsaveEvent
         }
     }
+    
 }
 </script>
 
@@ -76,39 +95,42 @@ export default {
     padding: 20px;
     border-radius: 8px;
     background-color: #ecf0f1;
+    overflow-x: auto; /* Ensures table is responsive */
 }
 
-/* Events List */
-.events-list {
-    list-style-type: none; /* Removes bullets from the list */
-    padding: 0;
+/* Events Table */
+.events-table {
+    width: 100%;
+    border-collapse: collapse; /* Collapses the border */
+}
+
+.events-table th, .events-table td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #bdc3c7;
+}
+
+/* Header */
+.events-table thead th {
+    background-color: #34495e;
+    color: #ffffff;
 }
 
 /* Individual Event styling */
 .event-item {
-    margin: 15px 0;
-    border-bottom: 1px solid #bdc3c7;
-    padding-bottom: 10px;
+    transition: background-color 0.3s ease;
 }
 
-.event-content {
-    display: flex;
-    flex-direction: column;
+.event-item:hover {
+    background-color: #f8f9f9;
 }
 
-.event-title {
-    font-size: 24px;
-    color: #2c3e50;
-    margin-bottom: 8px;
-}
-
-.event-date, .event-location, .event-type, .event-organizer {
+.event-title, .event-date, .event-location, .event-type {
     font-size: 16px;
-    color: #34495e;
-    margin: 4px 0;
 }
 
-.event-delete {
+/* Save Button */
+.event-save {
     background-color: #e74c3c;
     color: #ffffff;
     border: none;
@@ -118,12 +140,35 @@ export default {
     transition: background-color 0.3s ease;
 }
 
-.event-delete:hover {
-    background-color: #c0392b; /* Slightly darker shade for hover */
+.event-save:hover {
+    background-color: #c0392b;
 }
 
-.button-container button:not(:last-child) {
-    margin-right: 5px;
+.saved-event {
+    background-color: #34495e;
 }
 
+.saved-event:hover {
+    background-color: #2c3e50;
+}
+
+/* Details Link */
+.event-details-link {
+    background-color: #e74c3c;
+    color: #ffffff;
+    padding: 6px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-left: 8px; /* Spacing between Remove and Details buttons */
+    font-size: 14px;
+}
+
+.event-details-link:hover {
+    background-color: #c0392b;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+}
 </style>
