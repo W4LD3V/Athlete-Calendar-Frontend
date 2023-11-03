@@ -27,14 +27,15 @@
         </select>
         <label>Organizer</label>
         <select v-model="organizer">
-                <option value="" selected></option>
-                <option 
-                v-for="organizer in organizers"
-                :key="organizer"
-                :value="organizer">
-                    {{ organizer }}
-                </option>
+            <option value="" selected></option>
+            <option 
+                v-for="organizer in organizersData"
+                :key="organizer.id"
+                :value="organizer.id">
+                {{ organizer.name }}
+            </option>
         </select>
+
         <input type="submit" value="Search">
     </form>
 </template>
@@ -55,6 +56,7 @@ export default {
         const organizer = ref('');
         const radius = ref(0);
         const organizers = ref([]);
+        const organizersData = ref([]);
         const activityTypes = ref([]);
         const userCoordinates = ref(null);
         const startDate = ref(null);
@@ -112,7 +114,7 @@ export default {
 
         const fetchOrganizerNames = async () => {
             const uniqueOrganizerIds = [...new Set(props.eventData.map(event => event.organizer_id))];
-            const organizerNames = [];
+            const organizersWithId = [];
 
             for (const id of uniqueOrganizerIds) {
                 try {
@@ -129,15 +131,16 @@ export default {
                     }
 
                     const data = await response.json();
-                    organizerNames.push(data.name);
+                    organizersWithId.push({ name: data.name, id: id });
                 } catch (error) {
                     console.error("Error fetching organizer name:", error);
                     // Handle error appropriately
                 }
             }
 
-            organizers.value = organizerNames;
+            organizersData.value = organizersWithId;
         };
+
 
 
         watch(() => props.eventData, () => {
@@ -158,6 +161,7 @@ export default {
             userCoordinates,
             startDate,
             endDate,
+            organizersData,
             handleSubmit,
             handleDateChange
         };

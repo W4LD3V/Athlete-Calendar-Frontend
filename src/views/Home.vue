@@ -105,9 +105,10 @@ export default {
                 matchesCriteria = false;
             }
   
-            if (data.organizer && event.organizer !== data.organizer) {
+            if (data.organizer && event.organizer_id !== data.organizer) {
                 matchesCriteria = false;
             }
+
             if (data.date) {
                 const eventStart = event.date_start;
                 const eventEnd = event.date_end;

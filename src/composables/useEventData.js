@@ -22,7 +22,7 @@ export default function useEventData() {
             }
             const data = await response.json();
             eventData.value = data;
-            console.log(data)
+            // console.log(data)
         } catch (err) {
             console.error("Error fetching events:", err);
             error.value = err.message;
