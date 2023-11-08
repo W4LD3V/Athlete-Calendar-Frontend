@@ -11,7 +11,7 @@
         <span :class="{ 'is-today': day.isToday, 'is-other-month': day.isOtherMonth }">{{ day.date.getDate() }}</span>
         <div class="events" v-for="event in day.events" :key="event.id">
           <div class="event-item">
-            <span>{{ event.title }}</span>
+            <router-link class="event-title" :to="{ name: 'EventDetails', params: { id: event.id } }">{{ event.title }}</router-link>
           </div>
         </div>
       </div>
@@ -20,10 +20,12 @@
 </template>
 
 <script setup>
-import { ref, computed, watchEffect } from 'vue';
-import useEventData from '@/composables/useEventData';
+import { ref, computed, watchEffect, onMounted, watch } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
-const { eventData, isLoading, error, fetchEventData } = useEventData();
+const store = useStore();
+const savedEvents = ref([]);
 
 const currentDate = ref(new Date());
 const currentMonth = ref(currentDate.value.getMonth());
@@ -33,27 +35,51 @@ const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const currentMonthName = computed(() => currentDate.value.toLocaleString('default', { month: 'long' }));
 
+const fetchSavedEvents = async () => {
+  try {
+    const response = await fetch("http://localhost:3000/saved-events", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${store.state.token}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch saved events.");
+    }
+
+    const data = await response.json();
+    savedEvents.value = data;
+  } catch (error) {
+    console.error("Error fetching saved events:", error);
+  }
+};
+
+onMounted(fetchSavedEvents);
+
 const daysInMonth = computed(() => {
   const year = currentYear.value;
   const month = currentMonth.value;
   const firstDayOfMonth = new Date(year, month, 1);
-
-  // Adjust the index to make Monday the first day of the week
-  const startDay = (firstDayOfMonth.getDay() + 6) % 7;
-
-  // Get the first day to display in the calendar, adjusting for the new start day
-  const startDate = new Date(year, month, 1 - startDay);
-
   const days = [];
-  for (let i = 0; i < 42; i++) { // 6 weeks * 7 days = 42 days
+  
+  // Adjusting logic to make the week start from Monday
+  let firstDayOfWeek = firstDayOfMonth.getDay();
+  if (firstDayOfWeek === 0) { // Adjust for Sunday
+      firstDayOfWeek = 7;
+  }
+  const daysFromPreviousMonth = firstDayOfWeek - 1;
+  const startDate = new Date(firstDayOfMonth);
+  startDate.setDate(startDate.getDate() - daysFromPreviousMonth);
+
+  for (let i = 0; i < 42; i++) {
     const day = new Date(startDate);
     day.setDate(day.getDate() + i);
     const isToday = day.toDateString() === new Date().toDateString();
-    const events = eventData.value.filter(event => {
-      // Convert the event date from UNIX timestamp to Date and compare
-      const eventDate = new Date(parseInt(event.date_start) * 1000);
-      return eventDate.toDateString() === day.toDateString();
-    });
+    const events = savedEvents.value.filter(event => 
+      new Date(parseInt(event.date_start) * 1000).toDateString() === day.toDateString()
+    );
     const isOtherMonth = day.getMonth() !== month;
     
     days.push({ date: day, isToday, events, isOtherMonth });
@@ -83,8 +109,17 @@ const nextMonth = () => {
 
 watchEffect(() => {
   currentDate.value = new Date(currentYear.value, currentMonth.value, 1);
-  fetchEventData();
+  fetchSavedEvents();
 });
+
+const route = useRoute();
+
+watch(() => route.path, () => {
+  if (route.path === '/saved') {
+    fetchSavedEvents();
+  }
+}, { immediate: true });
+
 </script>
 
 <style scoped>

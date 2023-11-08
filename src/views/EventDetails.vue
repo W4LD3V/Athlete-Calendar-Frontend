@@ -9,15 +9,18 @@
     </div>
     
     <div class="event-right">
-        <h2>Organizer</h2>
-        <p v-if="eventDetails && eventDetails[0]">{{ eventDetails[0].organizer_name }}</p>
-        <h2>Interest</h2>
-        <p v-if="eventDetails && eventDetails[0]">{{ eventDetails[0].saved_count }} people saved this event</p>
-        <p v-if="eventDetails && eventDetails[0]">{{ eventDetails[0].friends_saved_count }} friends saved this event</p>
-        <h2>Details</h2>
-        <p v-if="eventDetails && eventDetails[0]">{{ eventDetails[0].description }}</p>
-        
+        <div>
+            <h1>Organizer</h1>
+            <p v-if="eventDetails && eventDetails[0]">{{ eventDetails[0].organizer_name }}</p>
+        </div>
         <div class="interest">
+            <h1>Interest</h1>
+            <p v-if="eventDetails && eventDetails[0]">{{ eventDetails[0].saved_count }} people saved this event</p>
+            <p v-if="eventDetails && eventDetails[0]">{{ eventDetails[0].friends_saved_count }} friends saved this event</p>
+        </div>
+        <div>
+            <h1>Details</h1>
+            <p v-if="eventDetails && eventDetails[0]">{{ eventDetails[0].description }}</p>
         </div>
     </div>
 </div>
@@ -71,16 +74,16 @@ export default {
 
 <style>
 .event-wrapper {
-    width: 90%; /* Same width as the navbar */
-    margin: 20px auto; /* Centered with auto margins on the left and right, adjust top margin as needed */
+    width: 90%;
+    margin: 20px auto;
     display: flex;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional, added for consistency with the navbar's box-shadow */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .event-left {
-    flex-basis: 50%; /* Adjust as needed */
+    flex-basis: 50%;
     background-color: #e74c3c;
     color: white;
     padding: 20px;
@@ -90,7 +93,7 @@ export default {
 }
 
 .event-right {
-    flex-basis: 50%; /* Adjust as needed */
+    flex-basis: 50%;
     padding: 20px;
     display: flex;
     flex-direction: column;

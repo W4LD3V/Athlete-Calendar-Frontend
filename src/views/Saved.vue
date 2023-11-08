@@ -16,7 +16,7 @@
           <td class="event-date">{{ formatDate(event.date_start, event.date_end) }}</td>
           <td class="event-location">{{ event.location }}</td>
           <td class="event-type">{{ event.activitytype }}</td>
-          <td class="button-container">
+          <td class="buttons-container">
             <button class="event-delete" @click="emitDeleteEvent(event.id)">Remove</button>
             <router-link class="event-details-link" :to="{ name: 'EventDetails', params: { id: event.id } }">Details</router-link>
           </td>

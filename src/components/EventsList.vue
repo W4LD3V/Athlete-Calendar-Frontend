@@ -16,7 +16,7 @@
                     <td class="event-date">{{ formatDate(event.date_start, event.date_end) }}</td>
                     <td class="event-location">{{ event.location }}</td>
                     <td class="event-type">{{ event.activitytype }}</td>
-                    <td class="button-container">
+                    <td class="buttons-container">
                         <button class="event-save" 
                                 :class="{ 'saved-event': savedEvents[event.id] }" 
                                 @click="toggleSave(event.id)">
@@ -167,7 +167,7 @@ export default {
     background-color: #c0392b;
 }
 
-.button-container {
+.buttons-container {
     display: flex;
     align-items: center;
 }
