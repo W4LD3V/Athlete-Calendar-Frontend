@@ -3,17 +3,20 @@ import store from '../src/store/index'
 
 import Home from '../src/views/Home.vue';
 import Saved from '../src/views/Saved.vue';
-import Upcoming from '../src/views/Upcoming.vue'; 
 import Profile from '../src/views/Profile.vue'; 
 import Messaging from '../src/views/Messaging.vue';
 import Settings from '../src/views/Settings.vue';
-import EventDetails from '../src/views/EventDetails'
-import NotFound from '../src/views/NotFound'
-import Login from '../src/views/Login'
-import Signup from '../src/views/Signup'
-import Calendar from '../src/views/Calendar'
-import ChangePassword from '../src/views/ChangePassword'
-import Chat from '../src/views/Chat'
+import EventDetails from '../src/views/EventDetails';
+import NotFound from '../src/views/NotFound';
+// import Login from '../src/views/Login;'
+// import Signup from '../src/views/Signup;'
+import Calendar from '../src/views/Calendar';
+import ChangePassword from '../src/views/ChangePassword';
+import Chat from '../src/views/Chat';
+import Auth from '../src/views/Auth'
+import CreateOrganization from '../src/views/CreateOrganization'
+import OrganizationEvents from '../src/views/OrganizationEvents'
+import CreateEvent from '../src/views/CreateEvent'
 
 const routes = [
     {
@@ -54,19 +57,24 @@ const routes = [
         props: true
     },
     {
-        path: '/login',
-        name: 'Login',
-        component: Login
-    },
-    {
-        path: '/signup',
-        name: 'Signup',
-        component: Signup
-    },
-    {
         path: '/password-change',
         name: 'Change Password',
         component: ChangePassword
+    },
+    {
+        path: '/create-organization',
+        name: 'Create Organization',
+        component: CreateOrganization
+    },
+    {
+        path: '/organization-events',
+        name: 'Organization Events',
+        component: OrganizationEvents
+    },
+    {
+        path: '/create-event',
+        name: 'Create Event',
+        component: CreateEvent
     },
     {
         path: '/chat/:friendId',
@@ -79,7 +87,24 @@ const routes = [
         path: '/:catchAll(.*)',
         name: 'NotFound',
         component: NotFound
-    }
+    },
+    {
+        path: '/auth',
+        component: Auth,
+        children: [
+          {
+            path: 'login',
+            name: 'Login',
+            component: () => import(/* webpackChunkName: "auth" */ '../src/components/LoginForm.vue')
+          },
+          {
+            path: 'signup',
+            name: 'Signup',
+            component: () => import(/* webpackChunkName: "auth" */ '../src/components/SignupForm.vue')
+          }
+        ]
+    },
+      
 ]
 
 
@@ -89,11 +114,16 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.name !== "Login" && !store.state.token) {
-      next({ name: "Login" });
+    const publicPages = ['Login', 'Signup'];
+    const authRequired = !publicPages.includes(to.name);
+    const loggedIn = store.getters.isAuthenticated;
+  
+    if (authRequired && !loggedIn) {
+      next({ name: 'Login' });
     } else {
       next();
     }
-  });
+  });  
+  
 
 export default router

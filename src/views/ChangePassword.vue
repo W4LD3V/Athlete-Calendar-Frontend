@@ -14,7 +14,7 @@
           <label for="confirmPassword">Confirm New Password:</label>
           <input id="confirmPassword" type="password" v-model="confirmPassword" required>
         </div>
-        <button type="submit">Change Password</button>
+        <button class="submit" type="submit">Change Password</button>
         <h3 v-if="successMessage">{{ successMessage }}</h3>
         <h3 v-if="errorMessage" class="error">{{ errorMessage }}</h3>
       </form>
@@ -84,9 +84,21 @@
   }
   </script>
   
-  <style>
+  <style scoped>
   .error {
     color: red;
+  }
+
+  .submit {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 20px;
+    font-weight: bold;
   }
   </style>
   

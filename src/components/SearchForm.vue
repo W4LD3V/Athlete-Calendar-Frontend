@@ -170,7 +170,7 @@ export default {
 </script>
 
 
-<style>
+<style >
     form {
     max-width: 420px;
     margin: 30px auto;

@@ -2,7 +2,8 @@
   <div class="calendar">
     <div class="calendar-header">
       <button @click="previousMonth">Prev</button>
-      <span>{{ currentMonthName }} {{ currentYear }}</span>
+      
+      <h1>{{ currentMonthName }} {{ currentYear }}</h1>
       <button @click="nextMonth">Next</button>
     </div>
     <div class="calendar-grid">
@@ -126,7 +127,7 @@ watch(() => route.path, () => {
 .calendar {
   max-width: 700px;
   margin: 0 auto;
-  font-family: 'Arial', sans-serif;
+  
 }
 
 .calendar-header {
@@ -134,6 +135,11 @@ watch(() => route.path, () => {
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
+}
+
+.calendar-header button {
+  background-color: #2c3e50;
+  color: #ecf0f1;
 }
 
 .calendar-grid {
@@ -164,18 +170,10 @@ watch(() => route.path, () => {
 }
 
 .is-today {
-  border: 1px solid blue;
-  background-color: rgba(0, 0, 255, 0.1);
+  border: 1px solid #e74c3c;
+  background-color: #ecf0f1;
   position: relative;
-}
-
-.is-today::after {
-  content: 'TODAY';
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  font-size: 10px;
-  color: blue;
+  padding: 5px
 }
 
 .is-other-month {
@@ -187,29 +185,39 @@ watch(() => route.path, () => {
 }
 
 .event-item {
-  background-color: #4285f4;
-  color: white;
+  background-color: #e74c3c;
+  color: #ecf0f1;
   padding: 3px;
+  margin-top: 10px;
   margin-bottom: 2px;
   border-radius: 2px;
-  font-size: 12px;
+  font-size: 6px;
   cursor: pointer;
 }
 
 .event-item:hover {
-  background-color: #357ae8;
+  background-color: #2c3e50;
+  color: white;
+}
+
+.event-item .event-title:visited {
+  color: inherit; /* This will make visited links have the same color as normal links */
+}
+
+.event-item .event-title {
+  text-decoration: none; /* This removes the underline */
 }
 
 button {
   padding: 5px 10px;
   cursor: pointer;
-  background-color: #4285f4;
+  background-color: #2c3e50;
   border: none;
   color: white;
   border-radius: 2px;
 }
 
 button:hover {
-  background-color: #357ae8;
+  background-color: #2c3e50;
 }
 </style>

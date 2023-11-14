@@ -16,12 +16,18 @@
             <router-link v-for="name in pageNames" :key="name" :to="{ name: name }" class="nav-item">{{ name }}</router-link>
         </div>
 
-        <button class="logout" @click="logout">Logout</button>
+        <button class="logout" @click="logout">
+            <svg width="40px" height="40px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#FFFFFF" d="M627.62 901.4H265.23c-56.91 0-103.05-46.14-103.05-103.05V262.8c0-56.91 46.14-103.05 103.05-103.05h362.38c56.91 0 103.04 46.13 103.04 103.04v34.78c0 15.26-12.37 27.63-27.63 27.63s-27.63-12.37-27.63-27.63V262.8c0-26.39-21.39-47.79-47.79-47.79H265.23c-26.39 0-47.78 21.39-47.78 47.78v535.57c0 26.39 21.39 47.77 47.77 47.77h362.39c26.39 0 47.77-21.39 47.77-47.77V769.6c0-15.26 12.37-27.63 27.63-27.63s27.63 12.37 27.63 27.63v28.76c0.02 56.91-46.12 103.04-103.02 103.04z" />
+                <path fill="#FFFFFF" d="M853.72 508.65L731.19 386.12c-10.79-10.79-28.29-10.79-39.08 0s-10.79 28.29 0 39.08l75.18 75.18 1.17 1.12h-301c-15.26 0-27.63 12.37-27.63 27.63s12.37 27.63 27.63 27.63h299.09l-83.76 83.76c-10.86 10.86-9.69 27.27 2.59 36.48 12.28 9.21 31.21 7.87 42.07-2.99l126.28-126.28c10.79-10.79 10.79-28.28-0.01-39.08z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
 
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
     data() {
@@ -38,21 +44,18 @@ export default {
         };
     },
     computed: {
-    isAuthenticated() {
-      return !!localStorage.getItem('token');
-    }
+        ...mapGetters(['isAuthenticated']),
     },
     methods: {
         toggleMenu() {
             this.showMenu = !this.showMenu;
         },
-        logout(){
-            // Remove the token from localStorage
-            localStorage.removeItem('token');
+        logout() {
+        this.$store.commit('clearToken');
 
-            // Programmatically navigate to the /login route
-            this.$router.push({ name: 'Login' });
-        } 
+        // Redirect to login
+        this.$router.push({ name: 'Login' });
+        }
     }
 }
 </script>
@@ -68,7 +71,7 @@ div.navbar {
     margin: 0 auto;
     width: 90%;
     display: flex;
-    justify-content: flex-start; /* Align items to the start */
+    justify-content: space-between; /* Adjust to space out items */
     align-items: center; /* Align items vertically in the center */
     margin-top: 20px;
     margin-bottom: auto;
@@ -135,24 +138,20 @@ div.navbar > div {
     margin-left: 20px;
 }
 
-.nav-links {
-    position: absolute; /* Absolute positioning */
-    left: 50%;         /* Start from the middle */
-    transform: translateX(-50%); /* Shift back by half its own width */
+div.nav-links {
     display: flex;
-    gap: 5px;
+    justify-content: center; /* Center the nav items */
+    flex-grow: 1; /* Allow it to take the available space */
 }
 
 .logout {
     background: transparent;
     border-radius: 8px;
-    padding: 10px;
     border: none;
-    font-size: 16px;
     cursor: pointer;
     color: #ffffff;
     margin-right: 20px;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition effect for hover */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .logout:hover {

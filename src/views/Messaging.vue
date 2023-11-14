@@ -1,36 +1,37 @@
 <template>
-  <div>
-    <div>
+  <div class="form">
+    <div class="search-users">
       <h2>Search Users</h2>
       <input type="text" v-model="searchQuery" placeholder="Enter name or email" />
-      <button @click="searchUsers">Search</button>
+      <button class="search" @click="searchUsers">Search</button>
       <ul>
-        <li v-for="user in searchedUsers" :key="user.id">
+        <li class="friend-search" v-for="user in searchedUsers" :key="user.id">
           {{ user.name }} ({{ user.email }})
           <button @click="sendFriendRequest(user.id)">Add Friend</button>
         </li>
       </ul>
     </div>
-
-    <div>
-      <h2>Friend Requests</h2>
-      <ul>
-        <li v-for="request in friendRequests" :key="request.id">
-          {{ request.sender_name }}
-          <button @click="acceptFriendRequest(request.sender_id)">Accept</button>
-        </li>
-      </ul>
-    </div>
-
-    <div>
-        <h2>Friends</h2>
+    <div class="friends">
+      <div>
+        <h2>Friend Requests</h2>
         <ul>
-          <li v-for="friend in friends" :key="friend.id">
-            <router-link :to="{ name: 'Chat', params: { friendId: friend.id } }">
-              {{ friend.name }} ({{ friend.email }})
-            </router-link>
+          <li v-for="request in friendRequests" :key="request.id">
+            {{ request.sender_name }}
+            <button @click="acceptFriendRequest(request.sender_id)">Accept</button>
           </li>
         </ul>
+      </div>
+  
+      <div>
+          <h2>Friends</h2>
+          <ul>
+            <li v-for="friend in friends" :key="friend.id">
+              <router-link class="my-friend" :to="{ name: 'Chat', params: { friendId: friend.id } }">
+                {{ friend.name }} ({{ friend.email }})
+              </router-link>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -144,6 +145,7 @@ const fetchFriends = async () => {
     if (response.ok) {
       const data = await response.json();
       friends.value = data;
+      console.log(friends.value)
     } else {
       throw new Error('Failed to fetch friends');
     }
@@ -157,3 +159,76 @@ onMounted(() => {
   fetchFriends();
 });
 </script>
+
+<style scoped>
+/* General Styles */
+
+.form {
+  margin: 30px auto; /* Centers the form horizontally */
+  padding: 20px;
+  border-radius: 10px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: grid; 
+  grid-template-columns: repeat(2, 1fr); /* Equal columns */
+  gap: 10px;
+}
+
+
+/* Input and Button Styles */
+input, select {
+  padding: 12px 10px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background-color: #fff;
+  color: #333;
+}
+
+.search, button {
+  background-color: #e74c3c; /* A more chat-like button color */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+}
+
+.search:hover, button:hover {
+  background-color: #e74c3c;
+}
+
+/* Section Styles */
+h2 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+/* Link Styles */
+router-link {
+  color: #e74c3c;
+  text-decoration: none;
+}
+
+.my-friend{
+  text-decoration: none;
+  color: inherit
+}
+
+
+
+
+</style>

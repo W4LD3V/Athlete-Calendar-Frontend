@@ -136,9 +136,11 @@ export default {
     color: #ffffff;
     border: none;
     border-radius: 4px;
-    padding: 8px 12px;
+    padding: 6px 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .event-delete:hover {

@@ -8,77 +8,34 @@
         <h1>Athlete Calendar</h1>
       </div>
     </div>
-    <div class="right-side">
-      <div class="form">
-        <h1>Login.</h1>
-        <div class="input-container">
-          <label>E-mail:</label>
-          <input v-model="email" />
-          <label>Password:</label>
-          <input type="password" v-model="password" />
-        </div>
-        <div class="button-container">
-          <button class="login-button" @click="login">Login</button>
-          <p>Don't have an account? <router-link to="/signup">Sign up here.</router-link></p>
-        </div>
-      </div>
+        <LoginForm v-if="isLogin" />
+        <SignupForm v-else />
     </div>
-  </div>
-</template>
-
-<script>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
-
-export default {
-  name: "Login",
-  setup() {
-    const email = ref("");
-    const password = ref("");
-    const router = useRouter();
-    const store = useStore();
-
-    const login = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: email.value,
-            password: password.value,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Login failed!");
-        }
-
-        const data = await response.json();
-        store.commit("setToken", data.token);
-        // Save token to localStorage
-        localStorage.setItem('token', data.token);
-
-
-        // Redirect to home page
-        router.push("/");
-      } catch (error) {
-        console.error("Login error:", error);
-      }
-    };
-
-    return {
-      email,
-      password,
-      login,
-    };
-  },
-};
-</script>
-
-<style>
+  </template>
+  
+  <script>
+  import { computed } from 'vue';
+  import { useRoute } from 'vue-router';
+  import LoginForm from '../components/LoginForm.vue';
+  import SignupForm from '../components/SignupForm.vue';
+  
+  export default {
+    components: {
+      LoginForm,
+      SignupForm
+    },
+    setup() {
+      const route = useRoute();
+      const isLogin = computed(() => route.name === 'Login');
+  
+      return {
+        isLogin
+      };
+    }
+  };
+  </script>
+  
+  <style>
 .container {
   display: flex;
   min-height: 100vh; /* Full height of the viewport */
@@ -118,8 +75,6 @@ export default {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better contrast */
   font-family: 'Montserrat', sans-serif;
 }
-
-
 
 .login-button {
   background-color: #e74c3c;
