@@ -108,6 +108,7 @@ export default {
     text-align: left;
     padding: 8px;
     border-bottom: 1px solid #bdc3c7;
+    flex: 1; 
 }
 
 /* Header */
@@ -173,4 +174,6 @@ export default {
     display: flex;
     align-items: center;
 }
+
+
 </style>

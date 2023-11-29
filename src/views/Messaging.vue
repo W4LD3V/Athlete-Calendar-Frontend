@@ -1,4 +1,5 @@
 <template>
+  <h1 class="white-title">Messaging</h1>
   <div class="form">
     <div class="search-users">
       <h2>Search Users</h2>

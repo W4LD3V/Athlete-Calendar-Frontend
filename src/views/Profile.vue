@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1 class="white-title">Profile</h1>
     <form class="profile-form" @submit.prevent="updateProfile">
       <div class="profile-picture">
         <img :src="previewUrl || userData.picture" alt="Profile Picture">

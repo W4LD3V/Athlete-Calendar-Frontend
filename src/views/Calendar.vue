@@ -3,7 +3,7 @@
     <div class="calendar-header">
       <button @click="previousMonth">Prev</button>
       
-      <h1>{{ currentMonthName }} {{ currentYear }}</h1>
+      <h1 class="white-title">{{ currentMonthName }} {{ currentYear }}</h1>
       <button @click="nextMonth">Next</button>
     </div>
     <div class="calendar-grid">

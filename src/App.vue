@@ -24,11 +24,25 @@ html, body, #app {
   padding: 0;
   height: 100%;
   width: 100%;
-  background-color: #F2F2F0;
+  background-image: url('~@/assets/background-image.jpg'); /* Sets the background image */
+  background-color: #F2F2F0; /* Sets the background color */
+  background-size: auto; /* Sets the height of the background image to 1000px */
+  background-position: center; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
   font-family: 'Montserrat', sans-serif; /* Set Montserrat as the default font */
 }
 
 * {
   box-sizing: border-box;
+}
+
+.white-title {
+    color: #ecf0f1;
+  }
+
+  @media (max-width: 768px) {
+  html, body, #app {
+    
+  }
 }
 </style>

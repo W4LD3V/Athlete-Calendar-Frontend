@@ -1,4 +1,5 @@
 <template>
+  <h1 class="white-title">Saved Events</h1>
   <div class="events-container">
     <table class="events-table" v-if="savedEvents && savedEvents.length">
       <thead>

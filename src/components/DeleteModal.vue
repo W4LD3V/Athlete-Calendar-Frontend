@@ -25,7 +25,7 @@ export default {
         const confirmDeletion = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch("http://localhost:3000/remove-user", {
+                const response = await fetch("http://localhost:3000/remove-organization", {
                     method: "DELETE",
                     headers: {
                         "Authorization": `Bearer ${token}`
@@ -36,14 +36,11 @@ export default {
                     throw new Error("Failed to delete the account");
                 }
 
-                // Clear the token from Vuex and localStorage
-                store.dispatch('logout'); // Dispatch the logout action
-
                 // Close the modal and redirect to login
                 closeDeleteModal();
-                router.push("/auth/login");
+                router.push("/create-organization");
             } catch (error) {
-                console.error("Error deleting account:", error);
+                console.error("Error deleting organization:", error);
                 // Handle error
             }
         };
@@ -57,19 +54,25 @@ export default {
 </script>
 
 
-<style>
+<style scoped>
   .modal {
     width: 400px;
     padding: 20px;
-    margin: 200px auto;
     background: white;
     border-radius: 10px;
+    margin: auto; /* Center horizontally */
+    position: relative; /* Relative to its normal position */
+    text-align: center;
   }
   .backdrop {
     top: 0;
+    left: 0;
     position: fixed;
     background: rgba(0,0,0,0.5);
     width: 100%;
     height: 100%;
+    display: flex;
+    justify-content: center; /* Center children horizontally */
+    align-items: center; /* Center children vertically */
   }
 </style>

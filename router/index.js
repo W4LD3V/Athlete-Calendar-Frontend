@@ -17,6 +17,8 @@ import Auth from '../src/views/Auth'
 import CreateOrganization from '../src/views/CreateOrganization'
 import OrganizationEvents from '../src/views/OrganizationEvents'
 import CreateEvent from '../src/views/CreateEvent'
+import Organization from '../src/views/Organization'
+
 
 const routes = [
     {
@@ -32,12 +34,12 @@ const routes = [
     },
     {
         path: '/calendar',
-        name: 'My Calendar',
+        name: 'Calendar',
         component: Calendar
     },
     {
         path: '/profile',
-        name: 'My Profile',
+        name: 'Profile',
         component: Profile
     },
     {
@@ -68,13 +70,18 @@ const routes = [
     },
     {
         path: '/organization-events',
-        name: 'Organization Events',
+        name: 'Events',
         component: OrganizationEvents
     },
     {
         path: '/create-event',
         name: 'Create Event',
         component: CreateEvent
+    },
+    {
+        path: '/my-organization',
+        name: 'Organization',
+        component: Organization
     },
     {
         path: '/chat/:friendId',

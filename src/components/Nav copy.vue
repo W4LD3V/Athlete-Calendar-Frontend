@@ -13,10 +13,8 @@
         </button>
         
         <div :class="{ 'hidden': !showMenu, 'nav-links': true }">
-            <router-link v-for="name in pageNames" :key="name" :to="{ name: name }" class="nav-item" @click="toggleMenu">{{ name }}</router-link>
-            <router-link v-if="isAuthenticated" to="{ name: 'Login' }" class="nav-item mobile-logout" @click="logoutAndToggleMenu">Logout</router-link>
+            <router-link v-for="name in pageNames" :key="name" :to="{ name: name }" class="nav-item">{{ name }}</router-link>
         </div>
-
 
         <button class="logout" @click="logout">
             <svg width="40px" height="40px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -79,8 +77,6 @@ div.navbar {
     align-items: center; /* Align items vertically in the center */
     margin-top: 20px;
     margin-bottom: auto;
-    padding-top: 5px;
-    padding-bottom: 5px;
 }
 
 svg {
@@ -139,6 +135,11 @@ div.navbar > div {
     flex-wrap: wrap;  /* Allow links to wrap if they don't fit */
 }
 
+.logo {
+    
+    margin-left: 20px;
+}
+
 div.nav-links {
     display: flex;
     justify-content: center; /* Center the nav items */
@@ -159,24 +160,17 @@ div.nav-links {
     background: #e74c3c;
 }
 
-.mobile-logout {
-        display: none; /* Hide by default */
-}
-
 /* Media query for mobile view */
 @media (max-width: 768px) {
     div.navbar {
-        flex-direction: column;
         align-items: flex-start;  /* Align to the start (left) */
         padding-left: 15px;  /* Give some space from the left */
-        padding-right: 15px;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        justify-content: space-between; /* This will space apart the logo and hamburger button */
     }
 
     .hamburger-btn {
-        display: block;  /* Show the button on small screens */
-        align-self: flex-start;  /* Align the button to the start (left) */
+        margin-right: 20px;
+        display: block;
     }
 
     div.navbar > div {
@@ -189,18 +183,38 @@ div.nav-links {
         flex-direction: column;
         width: 100%;
     }
-
-    .navbar .logo {
-        display: none !important;
+    .nav-links {
+        position: static; /* Disable absolute positioning on mobile */
+        transform: none; /* Remove the transform */
+    }
+    .logout{
+        visibility: hidden;
+    }
+    .navbar svg {
+    width: 30px; /* Set both SVGs to the same width */
+    height: 30px; /* Set both SVGs to the same height */
+    }
+    /* Logo Styles */
+    .logo {
+        display: flex; /* Use flex to align svg */
+        align-items: center; /* This will vertically center the svg in the logo div */
+        margin-left: 20px; /* Add some space to the left */
     }
 
-    .navbar .logout {
-        display: none !important;
+    /* Hamburger Button Styles */
+    .hamburger-btn {
+        display: flex; /* Use flex to align content */
+        align-items: center; /* This will vertically center the content */
+        margin-right: 20px; /* Add some space to the right */
+        font-size: 30px; /* Set size to match the logo icon size */
     }
 
-    .mobile-logout {
-            display: block;
+    /* Ensure the <button> doesn't have default padding and border */
+    button {
+        padding: 0;
+        border: none;
     }
 }
+
 
 </style>

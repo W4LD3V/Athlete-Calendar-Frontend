@@ -3,6 +3,7 @@
     <div v-if="isLoading">Loading...</div>
     <div v-if="error">{{ error }}</div>
     <div v-if="!isLoading && !error">
+      <h1 class="white-title">Homepage</h1>
       <SearchForm :eventData="eventData" @form-data="handleFormData"></SearchForm>
       <EventsList :eventData="displayedEvents" @deleteEvent="setTitleForModal"/>
       <teleport to="#modals" v-if="showDeleteModal">
@@ -72,34 +73,47 @@ export default {
         const apiKey = process.env.VUE_APP_GOOGLE_API_KEY;
         const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${apiKey}`);
         const data = await response.json();
-        // console.log("Geocode API response:", data);
+        console.log("Geocode API response for location", location, ":", data);
         if (data.results[0]) {
             return {
                 lat: data.results[0].geometry.location.lat,
                 lng: data.results[0].geometry.location.lng
             };
+        } else {
+            console.error("Geocode failed for location:", location);
+            return {}; // Return an empty object to avoid undefined
         }
     };
 
     const handleFormData = async (data) => {
-        // console.log("Data received from form:", data);
-        const filteredEvents = [];
+    console.log("Data received from form:", data);
+    const filteredEvents = [];
 
-        for (let event of eventData.value) { // Use .value with refs in Composition API
-            // console.log("Current event being processed:", event);
-            let matchesCriteria = true;
+    for (let event of eventData.value) {
+        console.log("Current event being processed:", event);
+        let matchesCriteria = true;
 
-            if (data.userCoordinates) {
-                const eventCoordinates = await geocodeEventLocation(event.location);
+        if (data.userCoordinates) {
+            console.log("Geocoding event location:", event.location);
+            const eventCoordinates = await geocodeEventLocation(event.location);
+            console.log("Event coordinates:", eventCoordinates);
+
+            // Check if eventCoordinates are valid
+            if (!eventCoordinates || !eventCoordinates.lat || !eventCoordinates.lng) {
+                console.log("Invalid or missing eventCoordinates for event:", event.name);
+                matchesCriteria = false; // Skip this event
+            } else {
                 const distance = calculateDistance(
                     data.userCoordinates.lat, data.userCoordinates.lng,
                     eventCoordinates.lat, eventCoordinates.lng
                 );
+                console.log("Calculated distance for event:", event.name, "is", distance, "km");
 
                 if (distance > data.radius) {
                     matchesCriteria = false;
                 }
             }
+        }
 
             if (data.activityType && event.activitytype !== data.activityType) {
                 matchesCriteria = false;
@@ -124,7 +138,7 @@ export default {
                 filteredEvents.push(event);
             }
         }
-        // console.log("Filtered events:", filteredEvents);
+        console.log("Filtered events:", filteredEvents);
         displayedEvents.value = [...filteredEvents]; // Use .value with refs in Composition API
     };
 

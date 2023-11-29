@@ -1,5 +1,5 @@
 <template>
-    <h1>Create Event</h1>
+    <h1 class="white-title">Create Event</h1>
     <p>To continue, please fill in the <br>
     necessary information for the event.</p>
     <form>
@@ -10,17 +10,22 @@
         <label>Type:</label>
         <input type="text" v-model="type">
         <label>Start date:</label>
-        <input type="text" v-model="start_date">
+        <Datepicker v-model="start_date" :format="'YYYY-MM-DD HH:mm'" :time-picker="true" />
+        <label>Start Time:</label>
+        <input type="time" v-model="start_time">
         <label>End date:</label>
-        <input type="text" v-model="end_date">
+        <Datepicker v-model="end_date" :format="'YYYY-MM-DD HH:mm'" :time-picker="true" />
+        <label>End Time:</label>
+        <input type="time" v-model="end_time">
         <label>Visibility date:</label>
-        <input type="text" v-model="visibility_date">
+        <Datepicker v-model="visibility_date" :format="'YYYY-MM-DD HH:mm'" :time-picker="true" />
+        <label>Visibility Time:</label>
+        <input type="time" v-model="visibility_time">
         <label>Description:</label>
         <input type="text" v-model="description">
         <label>GPX file:</label>
         <input type="text" v-model="gpx">
         <label>Organization image:</label>
-        <input type="text" v-model="picture">
         <p v-if="creationError" class="error-text">{{ creationErrorMessage }}</p>
         <div class="button-container">
             <button class="create-button" @click="createEvent($event)">Create Event</button>
@@ -33,26 +38,89 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import Datepicker from 'vue3-datepicker';
 
 export default {
+  components: {
+    Datepicker
+  },
   setup() {
     const router = useRouter();
     const title = ref('');
     const location = ref('');
     const type = ref('');
-    const start_date = ref('');
-    const end_date = ref('');
-    const visibility_date = ref('');
+    const start_date = ref(null);
+    const end_date = ref(null);
+    const visibility_date = ref(null);
     const description = ref('');
     const gpx = ref('');
     const picture = ref('');
     const creationError = ref(false);
     const creationErrorMessage = ref('');
+    const start_time = ref(''); // Initialize with an empty string or a default time value
+    const end_time = ref(''); 
+    const visibility_time = ref('');
+
+    function convertTo24Hour(time) {
+      let [hours, minutesPart] = time.split(':');
+      const minutes = minutesPart.substring(0, 2);
+      const meridian = minutesPart.substring(2).toUpperCase();
+
+      if (meridian === 'PM' && hours !== '12') {
+        hours = parseInt(hours, 10) + 12;
+      } else if (meridian === 'AM' && hours === '12') {
+        hours = '00';
+      }
+      return `${hours}:${minutes}`;
+    }
 
     const createEvent = async (e) => {
       e.preventDefault();
       creationError.value = false;
       creationErrorMessage.value = '';
+
+      const formattedDate = start_date.value.toISOString().split('T')[0]; // "YYYY-MM-DD" format
+      console.log("Formatted Start Date:", formattedDate);
+
+      // Combine date and time
+      const combinedStartDateTime = formattedDate && start_time.value 
+        ? `${formattedDate}T${start_time.value}:00` 
+        : null;
+
+      console.log("Combined Start DateTime:", combinedStartDateTime);
+
+      // Convert to Unix timestamp
+      const unixStartDate = combinedStartDateTime 
+        ? Math.floor(new Date(combinedStartDateTime).getTime() / 1000) 
+        : null;
+
+
+        const formattedEndDate = end_date.value.toISOString().split('T')[0];
+      const combinedEndDateTime = formattedEndDate && end_time.value 
+        ? `${formattedEndDate}T${end_time.value}:00` 
+        : null;
+      const unixEndDate = combinedEndDateTime 
+        ? Math.floor(new Date(combinedEndDateTime).getTime() / 1000) 
+        : null;
+
+      // Visibility Date and Time
+      const formattedVisibilityDate = visibility_date.value.toISOString().split('T')[0];
+      const combinedVisibilityDateTime = formattedVisibilityDate && visibility_time.value 
+        ? `${formattedVisibilityDate}T${visibility_time.value}:00` 
+        : null;
+      const unixVisibilityDate = combinedVisibilityDateTime 
+        ? Math.floor(new Date(combinedVisibilityDateTime).getTime() / 1000) 
+        : null;
+
+
+      console.log("Start Date:", unixStartDate);
+      console.log("End Date:", unixEndDate);
+      console.log("Visibility Date:", unixVisibilityDate);
+      console.log("Form Data:", {
+        title: title.value,
+        date_start: unixStartDate,
+        // ... other fields ...
+      });
 
       try {
         const token = localStorage.getItem('token');
@@ -64,13 +132,13 @@ export default {
           },
             body: JSON.stringify({
                 title: title.value,
-                date_start: start_date.value,
-                date_end: end_date.value,
+                date_start: unixStartDate,
+                date_end: unixEndDate,
                 location: location.value,
                 activityType: type.value,
                 description: description.value,
                 gpx: gpx.value || null, 
-                visibility_date: visibility_date.value || null,
+                visibility_date: unixVisibilityDate.value || null,
                 picture: picture.value || null,
                 }),
             });
@@ -109,7 +177,10 @@ export default {
       picture,
       creationError,
       creationErrorMessage,
-      createEvent
+      createEvent,
+      start_time,
+      end_time,
+      visibility_time,
     }
   }
 }

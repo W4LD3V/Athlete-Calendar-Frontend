@@ -1,14 +1,16 @@
 <template>
   <div>
-    <h1>User Settings</h1>
-    
-    <div v-if="userSettings">
-      <p><strong>Notifications:</strong> {{ userSettings.notifications }}</p>
-      <button @click="toggleNotifications">Toggle Notifications</button>
-      <p><strong>Privacy:</strong> {{ userSettings.privacy }}</p>
-      <button @click="togglePrivacy">
-          {{ userSettings.privacy === 'PUBLIC' ? 'Set to Not Public' : 'Set to Public' }}
-      </button>
+    <h1 class="white-title">Settings</h1>
+    <div class="white-background">
+      <h1>User Settings</h1>
+      <div v-if="userSettings">
+        <p><strong>Notifications:</strong> {{ userSettings.notifications }}</p>
+        <button @click="toggleNotifications">Toggle Notifications</button>
+        <p><strong>Privacy:</strong> {{ userSettings.privacy }}</p>
+        <button @click="togglePrivacy">
+            {{ userSettings.privacy === 'PUBLIC' ? 'Set to Not Public' : 'Set to Public' }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -115,5 +117,14 @@ button {
     transition: background-color 0.3s ease;
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
+}
+
+.white-background {
+  background-color: #ffffff; /* White background */
+  border-radius: 10px; /* Rounded corners */
+  padding: 20px; /* Padding inside the div */
+  max-width: 600px; /* Maximum width */
+  margin: auto; /* Center the div */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
 }
 </style>
