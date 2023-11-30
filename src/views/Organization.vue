@@ -164,7 +164,7 @@
 
       const router = useRouter();
       const redirectToPasswordChange = () => {
-        router.push('/password-change');
+        router.push('/change-organization-credentials');
       };
   
       const showModal = ref(false); // Add this line to manage DeleteModal visibility

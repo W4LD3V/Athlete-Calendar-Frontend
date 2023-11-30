@@ -98,6 +98,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background-color: #ecf0f1;
 }
 
 .event-left h1, .event-left h2, .event-left p {

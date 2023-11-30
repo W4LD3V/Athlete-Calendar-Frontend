@@ -18,6 +18,7 @@ import CreateOrganization from '../src/views/CreateOrganization'
 import OrganizationEvents from '../src/views/OrganizationEvents'
 import CreateEvent from '../src/views/CreateEvent'
 import Organization from '../src/views/Organization'
+import ChangeOrganizationCredentials from '../src/views/ChangeOrganizationCredentials'
 
 
 const routes = [
@@ -67,6 +68,11 @@ const routes = [
         path: '/create-organization',
         name: 'Create Organization',
         component: CreateOrganization
+    },
+    {
+        path: '/change-organization-credentials',
+        name: 'Change Organization Credentials',
+        component: ChangeOrganizationCredentials
     },
     {
         path: '/organization-events',
