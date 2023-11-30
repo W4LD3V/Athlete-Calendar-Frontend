@@ -44,8 +44,8 @@
         }
   
         try {
-          const token = localStorage.getItem('token'); // Alternatively, use `store.state.token`
-          const response = await fetch("http://localhost:3000/changePassword", {
+          const token = localStorage.getItem('token');
+          const response = await fetch(process.env.VUE_APP_API_URL + "/changePassword", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

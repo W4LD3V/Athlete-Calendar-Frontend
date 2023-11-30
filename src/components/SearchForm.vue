@@ -88,7 +88,6 @@ export default {
         };
 
         const emitFormData = (data) => {
-            // console.log("Emitting form data:", data);
             emit('form-data', data);
         };
 
@@ -134,7 +133,6 @@ export default {
                     organizersWithId.push({ name: data.name, id: id });
                 } catch (error) {
                     console.error("Error fetching organizer name:", error);
-                    // Handle error appropriately
                 }
             }
 
@@ -144,7 +142,6 @@ export default {
 
 
         watch(() => props.eventData, () => {
-            // console.log("eventData changed!");
             filterEventOrganizers();
             filterEventTypes();
             fetchOrganizerNames();
@@ -211,25 +208,24 @@ export default {
     margin-left: 10px;
     }
     select {
-    background-color: #ecf0f1;  /* Light background to stand out against the white form */
+    background-color: #ecf0f1; 
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Smooth transition effect for hover */
+    transition: background-color 0.3s ease;
     }
     select:hover {
-        background-color: #e0e7e8;  /* Slightly darker shade for hover */
+        background-color: #e0e7e8;
     }
 
-    /* Styling the range slider */
     input[type="range"] {
-        -webkit-appearance: none;  /* Overrides the default appearance */
-        background: #ecf0f1;  /* Matches the background color for select elements */
+        -webkit-appearance: none;  
+        background: #ecf0f1; 
         height: 5px;
         border-radius: 3px;
         outline: none;
         margin: 0;
         padding: 0;
         width: 100%;
-        transition: background-color 0.3s ease; /* Smooth transition effect for hover */
+        transition: background-color 0.3s ease; 
     }
 
     input[type="range"]:hover {
@@ -237,12 +233,12 @@ export default {
     }
 
     input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;  /* Overrides the default appearance */
+        -webkit-appearance: none; 
         appearance: none;
         width: 16px;
         height: 16px;
-        background: #2c3e50;  /* Darker shade for the slider thumb to be easily seen */
-        border-radius: 50%;  /* Makes the thumb circular */
+        background: #2c3e50;
+        border-radius: 50%; 
         cursor: pointer;
     }
 
@@ -254,24 +250,23 @@ export default {
         cursor: pointer;
     }
 
-    /* Styling the submit button */
     input[type="submit"] {
-        background-color: #2c3e50;  /* Dark color for the button */
-        color: #ecf0f1;  /* Light color for contrast */
-        border: none;  /* Removes the border */
-        padding: 10px 20px;  /* Adds padding for a better click target */
-        border-radius: 5px;  /* Rounds the corners of the button */
-        cursor: pointer;  /* Indicates an actionable element */
-        transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition effect for hover and active states */
-        margin-top: 20px;  /* Adds spacing above the button */
-        font-weight: bold;  /* Makes the text bold for emphasis */
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        border: none; 
+        padding: 10px 20px; 
+        border-radius: 5px; 
+        cursor: pointer;  
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        margin-top: 20px;  
+        font-weight: bold; 
     }
 
     input[type="submit"]:hover {
-        background-color: #34495e;  /* Slightly darker shade for hover */
+        background-color: #34495e;
     }
 
     input[type="submit"]:active {
-        transform: scale(0.97);  /* Slightly shrinks the button when clicked */
+        transform: scale(0.97); 
     }
 </style>

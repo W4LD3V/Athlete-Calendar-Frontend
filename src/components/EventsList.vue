@@ -44,7 +44,7 @@ export default {
     setup(props, { emit }) {
         const { eventData } = toRefs(props);
         const store = useStore();
-        const localSavedEvents = ref({}); // An object to track saved events locally
+        const localSavedEvents = ref({});
 
         const { saveEvent, unsaveEvent } = useSaveUnsaveEvents();
 
@@ -52,13 +52,11 @@ export default {
             if (savedEvents.value[eventId]) {
                 const unsaved = await unsaveEvent(eventId);
                 if (unsaved) {
-                    // Set the event as unsaved locally
                     delete savedEvents.value[eventId];
                 }
             } else {
                 const saved = await saveEvent(eventId);
                 if (saved) {
-                    // Set the event as saved locally
                     savedEvents.value[eventId] = true;
                 }
             }
@@ -87,7 +85,6 @@ export default {
 
 
 <style>
-/* Events Container */
 .events-container {
     width: 90%;
     margin: 20px auto;
@@ -95,13 +92,12 @@ export default {
     padding: 20px;
     border-radius: 8px;
     background-color: #ecf0f1;
-    overflow-x: auto; /* Ensures table is responsive */
+    overflow-x: auto;
 }
 
-/* Events Table */
 .events-table {
     width: 100%;
-    border-collapse: collapse; /* Collapses the border */
+    border-collapse: collapse;
 }
 
 .events-table th, .events-table td {
@@ -111,13 +107,11 @@ export default {
     flex: 1; 
 }
 
-/* Header */
 .events-table thead th {
     background-color: #34495e;
     color: #ffffff;
 }
 
-/* Individual Event styling */
 .event-item {
     transition: background-color 0.3s ease;
 }
@@ -130,7 +124,6 @@ export default {
     font-size: 16px;
 }
 
-/* Save Button */
 .event-save {
     background-color: #e74c3c;
     color: #ffffff;
@@ -155,14 +148,13 @@ export default {
     background-color: #2c3e50;
 }
 
-/* Details Link */
 .event-details-link {
     background-color: #e74c3c;
     color: #ffffff;
     padding: 6px 10px;
     text-decoration: none;
     border-radius: 4px;
-    margin-left: 8px; /* Spacing between Remove and Details buttons */
+    margin-left: 8px;
     font-size: 14px;
 }
 

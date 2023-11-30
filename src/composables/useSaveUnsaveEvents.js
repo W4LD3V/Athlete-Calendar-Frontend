@@ -8,7 +8,7 @@ export default function useSaveUnsaveEvents() {
         const userId = store.state.userId;
 
         try {
-            const response = await fetch("http://localhost:3000/save-event", {
+            const response = await fetch(process.env.VUE_APP_API_URL + "/save-event", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export default function useSaveUnsaveEvents() {
         const userId = store.state.userId;
 
         try {
-            const response = await fetch(`http://localhost:3000/unsave-event/${eventId}`, {
+            const response = await fetch(process.env.VUE_APP_API_URL + `/unsave-event/${eventId}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

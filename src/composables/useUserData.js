@@ -7,7 +7,7 @@ export default function useUserData() {
     
     const fetchUserData = async () => {
         try {
-            const response = await fetch("http://localhost:3000/user", {
+            const response = await fetch(process.env.VUE_APP_API_URL + "/user", {
                 headers: {
                     "Authorization": `Bearer ${store.state.token}`
                 }
@@ -17,7 +17,6 @@ export default function useUserData() {
                 throw new Error("Failed to fetch user data.");
             }
     
-            // Here, remove the 'const' to avoid shadowing
             userData.value = await response.json();
     
         } catch (error) {

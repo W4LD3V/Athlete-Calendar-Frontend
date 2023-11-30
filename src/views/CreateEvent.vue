@@ -57,7 +57,7 @@ export default {
     const picture = ref('');
     const creationError = ref(false);
     const creationErrorMessage = ref('');
-    const start_time = ref(''); // Initialize with an empty string or a default time value
+    const start_time = ref('');
     const end_time = ref(''); 
     const visibility_time = ref('');
 
@@ -79,17 +79,15 @@ export default {
       creationError.value = false;
       creationErrorMessage.value = '';
 
-      const formattedDate = start_date.value.toISOString().split('T')[0]; // "YYYY-MM-DD" format
+      const formattedDate = start_date.value.toISOString().split('T')[0];
       console.log("Formatted Start Date:", formattedDate);
 
-      // Combine date and time
       const combinedStartDateTime = formattedDate && start_time.value 
         ? `${formattedDate}T${start_time.value}:00` 
         : null;
 
       console.log("Combined Start DateTime:", combinedStartDateTime);
 
-      // Convert to Unix timestamp
       const unixStartDate = combinedStartDateTime 
         ? Math.floor(new Date(combinedStartDateTime).getTime() / 1000) 
         : null;
@@ -103,7 +101,6 @@ export default {
         ? Math.floor(new Date(combinedEndDateTime).getTime() / 1000) 
         : null;
 
-      // Visibility Date and Time
       const formattedVisibilityDate = visibility_date.value.toISOString().split('T')[0];
       const combinedVisibilityDateTime = formattedVisibilityDate && visibility_time.value 
         ? `${formattedVisibilityDate}T${visibility_time.value}:00` 
@@ -119,12 +116,11 @@ export default {
       console.log("Form Data:", {
         title: title.value,
         date_start: unixStartDate,
-        // ... other fields ...
       });
 
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch("http://localhost:3000/organization-events", {
+        const response = await fetch(process.env.VUE_APP_API_URL + "/organization-events", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -152,7 +148,7 @@ export default {
           } else {
             creationErrorMessage.value = data.message || "Event creation failed!";
           }
-          return; // Stop the function here
+          return;
         }
 
         await response.json();

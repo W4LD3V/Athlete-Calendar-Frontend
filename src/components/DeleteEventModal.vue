@@ -2,7 +2,7 @@
     <div class="backdrop" @click.self="closeDeleteModal">
       <div class="modal">
         <p>Are you sure you want to delete this event?</p>
-        <slot></slot> <!-- Use a default slot without specifying a name -->
+        <slot></slot>
         <button @click="confirmDelete">Yes</button>
         <button @click="closeDeleteModal">No</button>
       </div>
@@ -10,7 +10,7 @@
   </template>
       
   <script>
-  import { ref, useStore } from 'vue'; // Remove one of the useRouter imports
+  import { ref, useStore } from 'vue';
   
   export default {
     props: {
@@ -47,8 +47,6 @@
             throw new Error("Failed to delete the event.");
           }
   
-          // You can trigger an event to notify the parent component to refresh events here if needed
-  
           return true;
         } catch (error) {
           console.error("Error deleting the event:", error);
@@ -78,17 +76,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center; /* Center text horizontally */
-
-  /* Add space between the buttons */
+  text-align: center;
   gap: 10px;
 }
 
 .modal button {
-  width: auto; /* Allow buttons to expand to fit content */
+  width: auto;
 }
 
-/* Style the buttons */
 .modal button:nth-child(1) {
   background-color: #e74c3c;
   color: #ffffff;
@@ -108,10 +103,8 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
-/* Style on hover */
 .modal button:hover {
-  filter: brightness(1.2); /* Add a hover effect */
+  filter: brightness(1.2);
 }
 
 .backdrop {
@@ -124,6 +117,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Make sure it's above other elements */
+    z-index: 9999;
 }
 </style>

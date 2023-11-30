@@ -50,7 +50,7 @@ const friends = ref([]);
 const searchUsers = async () => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:3000/search-users?query=${searchQuery.value}`, {
+    const response = await fetch(process.env.VUE_APP_API_URL + `/search-users?query=${searchQuery.value}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -70,12 +70,12 @@ const searchUsers = async () => {
 
 const sendFriendRequest = async (friendId) => {
   try {
-    const token = localStorage.getItem('token'); // Assuming the token is stored with the key 'token'
-    const response = await fetch('http://localhost:3000/send-friend-request', {
+    const token = localStorage.getItem('token');
+    const response = await fetch(process.env.VUE_APP_API_URL + '/send-friend-request', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` // Include the token in the Authorization header
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({ friendId }),
     });
@@ -95,7 +95,7 @@ const sendFriendRequest = async (friendId) => {
 const acceptFriendRequest = async (friendId) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:3000/accept-friend-request', {
+    const response = await fetch(process.env.VUE_APP_API_URL + '/accept-friend-request', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ const acceptFriendRequest = async (friendId) => {
 const fetchFriendRequests = async () => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:3000/friend-requests', {
+    const response = await fetch(process.env.VUE_APP_API_URL + '/friend-requests', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -137,7 +137,7 @@ const fetchFriendRequests = async () => {
 const fetchFriends = async () => {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:3000/friends', {
+    const response = await fetch(process.env.VUE_APP_API_URL + '/friends', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -162,21 +162,18 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* General Styles */
 
 .form {
-  margin: 30px auto; /* Centers the form horizontally */
+  margin: 30px auto;
   padding: 20px;
   border-radius: 10px;
   background: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: grid; 
-  grid-template-columns: repeat(2, 1fr); /* Equal columns */
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
-
-/* Input and Button Styles */
 input, select {
   padding: 12px 10px;
   width: 100%;
@@ -189,7 +186,7 @@ input, select {
 }
 
 .search, button {
-  background-color: #e74c3c; /* A more chat-like button color */
+  background-color: #e74c3c;
   color: white;
   border: none;
   border-radius: 4px;
@@ -203,7 +200,6 @@ input, select {
   background-color: #e74c3c;
 }
 
-/* Section Styles */
 h2 {
   color: #333;
   margin-bottom: 15px;
@@ -218,7 +214,6 @@ li {
   margin-bottom: 10px;
 }
 
-/* Link Styles */
 router-link {
   color: #e74c3c;
   text-decoration: none;

@@ -11,12 +11,12 @@
 
 <script>
 import { useRouter } from 'vue-router';
-import { useStore } from 'vuex'; // Import useStore
+import { useStore } from 'vuex';
 
 export default {
     setup(props, { emit }) {
         const router = useRouter();
-        const store = useStore(); // Get the store instance
+        const store = useStore();
 
         const closeDeleteModal = () => {
             emit('close');
@@ -36,12 +36,10 @@ export default {
                     throw new Error("Failed to delete the account");
                 }
 
-                // Close the modal and redirect to login
                 closeDeleteModal();
                 router.push("/create-organization");
             } catch (error) {
                 console.error("Error deleting organization:", error);
-                // Handle error
             }
         };
 
@@ -60,8 +58,8 @@ export default {
     padding: 20px;
     background: white;
     border-radius: 10px;
-    margin: auto; /* Center horizontally */
-    position: relative; /* Relative to its normal position */
+    margin: auto;
+    position: relative;
     text-align: center;
   }
   .backdrop {
@@ -72,7 +70,7 @@ export default {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center; /* Center children horizontally */
-    align-items: center; /* Center children vertically */
+    justify-content: center;
+    align-items: center;
   }
 </style>

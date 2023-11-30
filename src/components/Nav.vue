@@ -57,7 +57,6 @@ export default {
         logout() {
         this.$store.commit('clearToken');
 
-        // Redirect to login
         this.$router.push({ name: 'Login' });
         }
     }
@@ -66,17 +65,15 @@ export default {
 
 
 <style>
-
-/* Navbar Container */
 div.navbar {
-    background-color: #2c3e50;  /* Using the same color from your app style for consistency */
+    background-color: #2c3e50;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
     width: 90%;
     display: flex;
-    justify-content: space-between; /* Adjust to space out items */
-    align-items: center; /* Align items vertically in the center */
+    justify-content: space-between;
+    align-items: center;
     margin-top: 20px;
     margin-bottom: auto;
     padding-top: 5px;
@@ -84,28 +81,25 @@ div.navbar {
 }
 
 svg {
-    margin-left: auto; /* Pushes the logo to the far right */
+    margin-left: auto;
     cursor: pointer;
 }
 
-/* Individual Link styling */
 div.navbar a {
-    text-decoration: none;  /* Removes the underline from the link */
-    color: #ecf0f1;         /* Light color for contrast against the dark navbar */
+    text-decoration: none;
+    color: #ecf0f1;
     padding: 8px 16px;
     border-radius: 4px;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition effect for hover */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Link hover styling */
 div.navbar a:hover {
-    background-color: #34495e;  /* Slightly darker shade for hover */
+    background-color: #34495e; 
     color: #ffffff;
 }
 
-/* Active Link styling - Assuming Vue router sets 'router-link-active' class */
 div.nav-links a.nav-item.router-link-active {
-    background-color: #e74c3c;  /* Red color to signify active page */
+    background-color: #e74c3c;
     color: #ffffff;
 }
 
@@ -115,7 +109,7 @@ div.nav-links a.nav-item.router-link-active {
     font-size: 24px;
     cursor: pointer;
     color: #ecf0f1;
-    display: none;  /* Initially hidden */
+    display: none;
 }
 
 .hidden {
@@ -128,21 +122,20 @@ div.nav-links a.nav-item.router-link-active {
     font-size: 24px;
     cursor: pointer;
     color: #ecf0f1;
-    display: none;  /* Initially hidden on larger screens */
+    display: none;
     align-self: center;
     margin-right: auto;
 }
 
-/* Menu Container (Holds the links) */
 div.navbar > div {
-    display: flex;  /* By default, it should display on larger screens */
-    flex-wrap: wrap;  /* Allow links to wrap if they don't fit */
+    display: flex; 
+    flex-wrap: wrap;
 }
 
 div.nav-links {
     display: flex;
-    justify-content: center; /* Center the nav items */
-    flex-grow: 1; /* Allow it to take the available space */
+    justify-content: center;
+    flex-grow: 1;
 }
 
 .logout {
@@ -160,32 +153,31 @@ div.nav-links {
 }
 
 .mobile-logout {
-        display: none; /* Hide by default */
+        display: none;
 }
 
-/* Media query for mobile view */
 @media (max-width: 768px) {
     div.navbar {
         flex-direction: column;
-        align-items: flex-start;  /* Align to the start (left) */
-        padding-left: 15px;  /* Give some space from the left */
+        align-items: flex-start;
+        padding-left: 15px;
         padding-right: 15px;
         padding-top: 10px;
         padding-bottom: 10px;
     }
 
     .hamburger-btn {
-        display: block;  /* Show the button on small screens */
-        align-self: flex-start;  /* Align the button to the start (left) */
+        display: block;
+        align-self: flex-start; 
     }
 
     div.navbar > div {
-        width: 100%;  /* Take the full width of its parent */
-        display: none;  /* Hide the links initially */
+        width: 100%; 
+        display: none; 
     }
 
     div.navbar > div:not(.hidden) {
-        display: flex;  /* Show the links when showMenu is true */
+        display: flex;
         flex-direction: column;
         width: 100%;
     }

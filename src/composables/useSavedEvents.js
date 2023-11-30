@@ -12,7 +12,7 @@ export default function useSavedEvents() {
         error.value = null;
 
         try {
-            const response = await fetch("http://localhost:3000/saved-events", {
+            const response = await fetch(process.env.VUE_APP_API_URL + "/saved-events", {
                 headers: {
                     "Authorization": `Bearer ${store.state.token}`
                 }
@@ -24,7 +24,7 @@ export default function useSavedEvents() {
 
             const savedEventData = await response.json();
             savedEventData.forEach(event => {
-                savedEvents.value[event.id] = true; // Use event.id here because each event is an object
+                savedEvents.value[event.id] = true; 
             });
             
 

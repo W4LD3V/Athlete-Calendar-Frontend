@@ -57,7 +57,7 @@ setup() {
   const selectedEventId = ref(null);
   const selectedEventName = ref('');
   const { formatDate } = useDateFormat();
-  const router = useRouter(); // Added router instance
+  const router = useRouter();
 
   const toggleModal = (eventId, eventName) => {
     showModal.value = !showModal.value;
@@ -66,20 +66,19 @@ setup() {
   };
 
   const confirmDeletion = async () => {
-  await deleteEvent(selectedEventId.value); // Implement this function
+  await deleteEvent(selectedEventId.value);
   showModal.value = false;
   };
 
   const checkOrganizationExists = async () => {
       try {
-        const response = await fetch("http://localhost:3000/organizer", {
+        const response = await fetch(process.env.VUE_APP_API_URL + "/organizer", {
           headers: {
             "Authorization": `Bearer ${store.state.token}`
           }
         });
 
         if (!response.ok) {
-          // Redirect if organization does not exist
           router.push('/create-organization');
         }
       } catch (error) {
@@ -90,7 +89,7 @@ setup() {
 
   const fetchCreatedEvents = async () => {
     try {
-      const response = await fetch("http://localhost:3000/organization-events", {
+      const response = await fetch(process.env.VUE_APP_API_URL + "/organization-events", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +112,7 @@ setup() {
 
   const deleteEvent = async (eventId) => {
   try {
-    const response = await fetch(`http://localhost:3000/organization-events/${eventId}`, {
+    const response = await fetch(process.env.VUE_APP_API_URL + `/organization-events/${eventId}`, {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${store.state.token}`
@@ -124,7 +123,6 @@ setup() {
       throw new Error("Failed to delete event.");
     }
 
-    // Update the local state to reflect the deletion
     createdEvents.value = createdEvents.value.filter(event => event.id !== eventId);
 
   } catch (error) {
@@ -134,7 +132,7 @@ setup() {
 
 onMounted(async () => {
     await checkOrganizationExists();
-    await fetchCreatedEvents(); // Updated function name
+    await fetchCreatedEvents();
 });
 
   return {

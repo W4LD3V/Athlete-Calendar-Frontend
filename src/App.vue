@@ -24,12 +24,12 @@ html, body, #app {
   padding: 0;
   height: 100%;
   width: 100%;
-  background-image: url('~@/assets/background-image.jpg'); /* Sets the background image */
-  background-color: #F2F2F0; /* Sets the background color */
-  background-size: auto; /* Sets the height of the background image to 1000px */
-  background-position: center; /* Centers the background image */
-  background-repeat: no-repeat; /* Prevents the image from repeating */
-  font-family: 'Montserrat', sans-serif; /* Set Montserrat as the default font */
+  background-image: url('~@/assets/background-image.jpg');
+  background-color: #F2F2F0;
+  background-size: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Montserrat', sans-serif;
 }
 
 * {

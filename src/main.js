@@ -1,7 +1,7 @@
 // main.js
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from '../router/index'; // Updated import path
+import router from '../router/index';
 import store from './store';
 
 const token = localStorage.getItem('token');

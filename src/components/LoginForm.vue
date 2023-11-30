@@ -33,7 +33,7 @@
   
       const login = async () => {
       try {
-        const response = await fetch("http://localhost:3000/login", {
+        const response = await fetch(process.env.VUE_APP_API_URL + "/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -48,7 +48,7 @@
           const data = await response.json();
           loginError.value = true;
           loginErrorMessage.value = data.message || "Login failed!";
-          return; // Stop the function here
+          return;
         }
 
         const data = await response.json();
@@ -72,7 +72,6 @@
     };
 
     const handleKeyup = (event) => {
-      // Check if the key pressed is the Enter key
       if (event.key === 'Enter') {
         login();
       }

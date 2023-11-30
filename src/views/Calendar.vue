@@ -38,7 +38,7 @@ const currentMonthName = computed(() => currentDate.value.toLocaleString('defaul
 
 const fetchSavedEvents = async () => {
   try {
-    const response = await fetch("http://localhost:3000/saved-events", {
+    const response = await fetch(process.env.VUE_APP_API_URL + "/saved-events", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -65,9 +65,8 @@ const daysInMonth = computed(() => {
   const firstDayOfMonth = new Date(year, month, 1);
   const days = [];
   
-  // Adjusting logic to make the week start from Monday
   let firstDayOfWeek = firstDayOfMonth.getDay();
-  if (firstDayOfWeek === 0) { // Adjust for Sunday
+  if (firstDayOfWeek === 0) {
       firstDayOfWeek = 7;
   }
   const daysFromPreviousMonth = firstDayOfWeek - 1;
@@ -201,11 +200,11 @@ watch(() => route.path, () => {
 }
 
 .event-item .event-title:visited {
-  color: inherit; /* This will make visited links have the same color as normal links */
+  color: inherit;
 }
 
 .event-item .event-title {
-  text-decoration: none; /* This removes the underline */
+  text-decoration: none;
 }
 
 button {

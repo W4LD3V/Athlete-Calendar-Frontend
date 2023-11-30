@@ -64,7 +64,6 @@ export default {
       signupError.value = false;
       signupErrorMessage.value = '';
 
-      // Consolidated validation logic
       if (!name.value.trim()) {
         signupErrorMessage.value = 'Name is required.';
       } else if (!surname.value.trim()) {
@@ -78,10 +77,9 @@ export default {
       } else if (!type.value.trim()) {
         signupErrorMessage.value = 'Type is required.';
       } else {
-        // Proceed with signup if validation passes
         isSubmitting.value = true;
         try {
-          const response = await fetch("http://localhost:3000/signup", {
+          const response = await fetch(process.env.VUE_APP_API_URL + "/signup", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -110,15 +108,13 @@ export default {
         } finally {
           isSubmitting.value = false;
         }
-        return; // Exit the function after handling signup
+        return;
       }
 
-      // Set signup error if any validation fails
       signupError.value = true;
     };
 
     const handleKeyup = (event) => {
-      // Check if the key pressed is the Enter key
       if (event.key === 'Enter') {
         signup();
       }

@@ -48,11 +48,10 @@ export default {
 
     const fetchSavedEvents = async () => {
       try {
-        const response = await fetch("http://localhost:3000/saved-events", {
+        const response = await fetch(process.env.VUE_APP_API_URL + "/saved-events", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            // Assuming you have a way to access the store state in setup (e.g., useStore from Vuex 4)
             "Authorization": `Bearer ${store.state.token}`
           }
         });
@@ -72,7 +71,6 @@ export default {
     const emitDeleteEvent = async (eventId) => {
       const unsaved = await unsaveEvent(eventId);
       if (unsaved) {
-        // Update the local state to remove the unsaved event
         savedEvents.value = savedEvents.value.filter(event => event.id !== eventId);
       }
     }
@@ -89,7 +87,6 @@ export default {
 </script>
 
 <style>
-/* Events Container */
 .events-container {
     width: 90%;
     margin: 20px auto;
@@ -97,13 +94,12 @@ export default {
     padding: 20px;
     border-radius: 8px;
     background-color: #ecf0f1;
-    overflow-x: auto; /* Ensures table is responsive */
+    overflow-x: auto;
 }
 
-/* Events Table */
 .events-table {
     width: 100%;
-    border-collapse: collapse; /* Collapses the border */
+    border-collapse: collapse;
 }
 
 .events-table th, .events-table td {
@@ -112,13 +108,11 @@ export default {
     border-bottom: 1px solid #bdc3c7;
 }
 
-/* Header */
 .events-table thead th {
     background-color: #34495e;
     color: #ffffff;
 }
 
-/* Individual Event styling */
 .event-item {
     transition: background-color 0.3s ease;
 }
@@ -131,7 +125,6 @@ export default {
     font-size: 16px;
 }
 
-/* Remove Button */
 .event-delete {
     background-color: #e74c3c;
     color: #ffffff;

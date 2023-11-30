@@ -38,19 +38,19 @@
   <style>
 .container {
   display: flex;
-  min-height: 100vh; /* Full height of the viewport */
-  width: 100vw; /* Full width of the viewport */
-  overflow: hidden; /* Prevents scrollbars if there's any overflow */
-  font-family: 'Montserrat', sans-serif; /* Set Montserrat as the default font */
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .left-side {
-  flex: 1; /* Take up half of the container */
+  flex: 1; 
   background-color: #e74c3c;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column; /* Stack logo and app name vertically */
+  flex-direction: column; 
 }
 
 .logo-container {
@@ -58,21 +58,21 @@
 }
 
 .right-side {
-  flex: 1; /* Take up half of the container */
+  flex: 1; 
   background-color: #F2F2F0;
   display: flex;
-  align-items: center; /* Vertically center the form */
+  align-items: center;
   justify-content: center;
 }
 
 .form {
   max-width: 420px;
-  margin: 0; /* Remove auto margin */
+  margin: 0;
   background: white;
   text-align: left;
   padding: 40px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for better contrast */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: 'Montserrat', sans-serif;
 }
 

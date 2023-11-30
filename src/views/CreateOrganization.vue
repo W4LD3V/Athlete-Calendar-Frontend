@@ -39,7 +39,7 @@ export default {
 
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch("http://localhost:3000/create-organizer", {
+        const response = await fetch(process.env.VUE_APP_API_URL + "/create-organizer", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export default {
           } else {
             creationErrorMessage.value = data.message || "Creation failed!";
           }
-          return; // Stop the function here
+          return;
         }
 
         const data = await response.json();
@@ -76,7 +76,6 @@ export default {
     };
 
     const handleKeyup = (event) => {
-      // Check if the key pressed is the Enter key
       if (event.key === 'Enter') {
         createOrganization();
       }

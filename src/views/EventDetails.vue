@@ -41,7 +41,7 @@ export default {
 
         const fetchEventDetails = async () => {
             try {
-                const eventId = route.params.id; // Get the event ID from the URL parameters
+                const eventId = route.params.id;
                 const token = localStorage.getItem('token');
 
                 const response = await fetch(`${process.env.VUE_APP_API_URL}/events/${eventId}`, {

@@ -32,8 +32,6 @@ export default {
     SearchForm
   },
   setup() {
-    // console.log("Initial eventData in Home:", eventData.value);
-    // console.log("Initial displayedEvents in Home:", displayedEvents.value);
     const { eventData, isLoading, error } = useEventData();
 
     const showDeleteModal = ref(false);
@@ -54,7 +52,7 @@ export default {
     };
 
     const calculateDistance = (lat1, lon1, lat2, lon2) => {
-        const R = 6371; // Radius of the Earth in km
+        const R = 6371;
         const dLat = (lat2 - lat1) * (Math.PI / 180);
         const dLon = (lon2 - lon1) * (Math.PI / 180);
 
@@ -81,7 +79,7 @@ export default {
             };
         } else {
             console.error("Geocode failed for location:", location);
-            return {}; // Return an empty object to avoid undefined
+            return {};
         }
     };
 
@@ -98,10 +96,9 @@ export default {
             const eventCoordinates = await geocodeEventLocation(event.location);
             console.log("Event coordinates:", eventCoordinates);
 
-            // Check if eventCoordinates are valid
             if (!eventCoordinates || !eventCoordinates.lat || !eventCoordinates.lng) {
                 console.log("Invalid or missing eventCoordinates for event:", event.name);
-                matchesCriteria = false; // Skip this event
+                matchesCriteria = false;
             } else {
                 const distance = calculateDistance(
                     data.userCoordinates.lat, data.userCoordinates.lng,
@@ -139,7 +136,7 @@ export default {
             }
         }
         console.log("Filtered events:", filteredEvents);
-        displayedEvents.value = [...filteredEvents]; // Use .value with refs in Composition API
+        displayedEvents.value = [...filteredEvents]; 
     };
 
     return {
@@ -152,7 +149,6 @@ export default {
       toggleDeleteModal,
       setTitleForModal,
       handleFormData
-      // ... other returned values
     };
   },
 };

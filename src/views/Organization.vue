@@ -35,14 +35,14 @@
   export default {
     name: 'Profile',
     components: {
-      DeleteModal, // Register the DeleteModal component
+      DeleteModal,
     },
     setup() {
         const organizationData = ref({});
-        const eventData = ref({}); // Object to store event data
-        const name = ref(''); // Define name as a reactive property
-        const description = ref(''); // Define description as a reactive property
-        const contact_info = ref(''); // Define contact_info as a reactive property
+        const eventData = ref({});
+        const name = ref('');
+        const description = ref(''); 
+        const contact_info = ref('');
         const store = useStore();
         const newPicture = ref(null);
         const previewUrl = ref('');
@@ -59,7 +59,7 @@
             
     const fetchOrganizationEventData = async () => {
         try {
-            const response = await fetch("http://localhost:3000/organization-events", {
+            const response = await fetch(process.env.VUE_APP_API_URL + "/organization-events", {
                 headers: {
                     "Authorization": `Bearer ${store.state.token}`
                 }
@@ -71,7 +71,7 @@
     
             const data = await response.json();
                 if (data && data.length > 0) {
-                eventData.value = data[0]; // Assign the first item of the array to eventData
+                eventData.value = data[0];
                 }
             } catch (error) {
                 console.error("Error fetching user data:", error);
@@ -80,14 +80,13 @@
 
     const fetchOrganizationData = async () => {
         try {
-          const response = await fetch("http://localhost:3000/organizer", {
+          const response = await fetch(process.env.VUE_APP_API_URL + "/organizer", {
             headers: {
               "Authorization": `Bearer ${store.state.token}`
             }
           });
 
           if (!response.ok) {
-            // If the server returns a 500 error, redirect to the create-organization page
             if (response.status === 500) {
               router.push('/create-organization');
             } else {
@@ -114,7 +113,7 @@
         formData.append('picture', newPicture.value);
         try {
           const token = localStorage.getItem('token');
-          const response = await fetch("http://localhost:3000/uploadProfilePicture", {
+          const response = await fetch(process.env.VUE_APP_API_URL + "/uploadProfilePicture", {
             method: "POST",
             headers: {
               "Authorization": `Bearer ${token}`
@@ -125,12 +124,10 @@
           if (!response.ok) {
             throw new Error(data.message || "Profile picture upload failed!");
           }
-          // Update picture URL and reset the newPicture and previewUrl
           userData.picture = data.path;
           newPicture.value = null;
           previewUrl.value = '';
-          // Now fetch the latest user data
-          await fetchOrganizationEventData(); // This function should re-fetch the user data, including the new profile picture
+          await fetchOrganizationEventData();
         } catch (error) {
           console.error("Profile picture upload error:", error);
         }
@@ -144,15 +141,15 @@
   
       const updateProfile = async () => {
           try {
-              console.log("Updating profile with data:", organizationData.value); // Log the data being used for update
+              console.log("Updating profile with data:", organizationData.value);
               const token = localStorage.getItem('token');
-              const response = await fetch("http://localhost:3000/updateProfile", {
+              const response = await fetch(process.env.VUE_APP_API_URL + "/updateProfile", {
                   method: "POST",
                   headers: {
                       "Content-Type": "application/json",
                       "Authorization": `Bearer ${token}`
                   },
-                  body: JSON.stringify(organizationData.value) // Make sure this is organizationData instead of userData
+                  body: JSON.stringify(organizationData.value)
               });
               if (!response.ok) {
                   throw new Error("Profile update failed!");
@@ -167,7 +164,7 @@
         router.push('/change-organization-credentials');
       };
   
-      const showModal = ref(false); // Add this line to manage DeleteModal visibility
+      const showModal = ref(false);
   
       const toggleModal = () => {
         showModal.value = !showModal.value;
@@ -230,11 +227,10 @@
   .profile-form {
     display: flex;
     align-items: center;
-    gap: 20px; /* Adjust the space between picture and info */
+    gap: 20px;
   }
   
   .profile-picture {
-    /* You can set a specific width and height for the image container */
     width: 150px;
     height: 150px;
     display: flex;
@@ -250,7 +246,7 @@
   .profile-picture img {
     max-width: 100%;
     max-height: 100%;
-    border-radius: 50%; /* Optional: makes the image round */
+    border-radius: 50%;
   }
   
   .profile-info {
@@ -259,7 +255,7 @@
   }
   
   .profile-info label {
-    margin-top: 10px; /* Adjust spacing between labels and inputs */
+    margin-top: 10px;
   }
   
   .submit {
@@ -284,14 +280,14 @@
   
   .link-container {
     display: flex;
-    justify-content: center; /* Center the buttons horizontally */
-    gap: 10px; /* Adds space between the buttons */
-    margin-top: 20px; /* Add some space between the form and the buttons */
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
   }
   
   .profile-picture,
   .profile-info {
-    flex: 1; /* Each child will take up half of the space */
+    flex: 1; 
   }
   
   .profile-buttons button:nth-child(1) {

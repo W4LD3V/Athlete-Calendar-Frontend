@@ -22,7 +22,6 @@
 </template>
   
   <script>
-// ChangeOrganizationCredentials.vue
 import { ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
@@ -41,7 +40,7 @@ export default {
     const fetchOrganizationData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch("http://localhost:3000/organizer", {
+        const response = await fetch(process.env.VUE_APP_API_URL + "/organizer", {
           headers: {
             "Authorization": `Bearer ${token}`
           }
@@ -68,7 +67,7 @@ export default {
       const handleChangeOrganizationCredentials = async () => {
         try {
           const token = localStorage.getItem('token');
-          const response = await fetch("http://localhost:3000/changeOrganizationCredentials", {
+          const response = await fetch(process.env.VUE_APP_API_URL + "/changeOrganizationCredentials", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -110,6 +109,5 @@ export default {
   </script>
   
   <style scoped>
-  /* Add your CSS styles here */
   </style>
   

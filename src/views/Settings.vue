@@ -27,7 +27,7 @@ export default {
     async fetchUserSettings() {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3000/user-settings', {
+        const response = await fetch(process.env.VUE_APP_API_URL + '/user-settings', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -49,7 +49,7 @@ export default {
         };
         
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3000/update-user-settings', {
+        const response = await fetch(process.env.VUE_APP_API_URL + '/update-user-settings', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ export default {
         };
 
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3000/update-user-settings', {
+        const response = await fetch(process.env.VUE_APP_API_URL + '/update-user-settings', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -120,11 +120,11 @@ button {
 }
 
 .white-background {
-  background-color: #ffffff; /* White background */
-  border-radius: 10px; /* Rounded corners */
-  padding: 20px; /* Padding inside the div */
-  max-width: 600px; /* Maximum width */
-  margin: auto; /* Center the div */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 </style>

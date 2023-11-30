@@ -22,7 +22,6 @@ export default function useEventData() {
             }
             const data = await response.json();
             eventData.value = data;
-            // console.log(data)
         } catch (err) {
             console.error("Error fetching events:", err);
             error.value = err.message;
@@ -32,8 +31,6 @@ export default function useEventData() {
 
     };
 
-
-    // Fetch the data when this composable is used.
     onMounted(fetchEventData);
 
     return {

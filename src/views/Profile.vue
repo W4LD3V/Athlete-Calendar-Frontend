@@ -32,17 +32,17 @@ import { onMounted, ref } from 'vue';
 import useUserData from '../composables/useUserData';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import DeleteModal from '../components/DeleteModal.vue'; // Import the DeleteModal component
+import DeleteModal from '../components/DeleteModal.vue';
 
 export default {
   name: 'Profile',
   components: {
-    DeleteModal, // Register the DeleteModal component
+    DeleteModal,
   },
   setup() {
     const { userData, fetchUserData } = useUserData();
     const store = useStore();
-    const showSuccessMessage = ref(false); // Reactive variable for showing the success message
+    const showSuccessMessage = ref(false);
     const newPicture = ref(null);
     const previewUrl = ref('');
 
@@ -58,7 +58,7 @@ export default {
       formData.append('picture', newPicture.value);
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch("http://localhost:3000/uploadProfilePicture", {
+        const response = await fetch(process.env.VUE_APP_API_URL + "/uploadProfilePicture", {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${token}`
@@ -69,12 +69,11 @@ export default {
         if (!response.ok) {
           throw new Error(data.message || "Profile picture upload failed!");
         }
-        // Update picture URL and reset the newPicture and previewUrl
         userData.picture = data.path;
         newPicture.value = null;
         previewUrl.value = '';
-        // Now fetch the latest user data
-        await fetchUserData(); // This function should re-fetch the user data, including the new profile picture
+      
+        await fetchUserData();
       } catch (error) {
         console.error("Profile picture upload error:", error);
       }
@@ -88,8 +87,8 @@ export default {
 
     const updateProfile = async () => {
       try {
-        const token = localStorage.getItem('token'); // Alternatively, you can use `store.state.token`
-        const response = await fetch("http://localhost:3000/updateProfile", {
+        const token = localStorage.getItem('token');
+        const response = await fetch(process.env.VUE_APP_API_URL + "/updateProfile", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -100,9 +99,9 @@ export default {
         if (!response.ok) {
           throw new Error("Profile update failed!");
         }
-        // Handle success
-        showSuccessMessage.value = true; // Show success message
-        // Optionally, hide the message after a few seconds
+        
+        showSuccessMessage.value = true;
+        
         setTimeout(() => {
           showSuccessMessage.value = false;
         }, 3000);
@@ -115,7 +114,7 @@ export default {
       router.push('/password-change');
     };
 
-    const showModal = ref(false); // Add this line to manage DeleteModal visibility
+    const showModal = ref(false); 
 
     const toggleModal = () => {
       showModal.value = !showModal.value;
@@ -171,11 +170,10 @@ color: #555;
 .profile-form {
   display: flex;
   align-items: center;
-  gap: 20px; /* Adjust the space between picture and info */
+  gap: 20px;
 }
 
 .profile-picture {
-  /* You can set a specific width and height for the image container */
   width: 150px;
   height: 150px;
   display: flex;
@@ -191,7 +189,7 @@ color: #555;
 .profile-picture img {
   max-width: 100%;
   max-height: 100%;
-  border-radius: 50%; /* Optional: makes the image round */
+  border-radius: 50%;
 }
 
 .profile-info {
@@ -200,7 +198,7 @@ color: #555;
 }
 
 .profile-info label {
-  margin-top: 10px; /* Adjust spacing between labels and inputs */
+  margin-top: 10px;
 }
 
 .submit {
@@ -225,14 +223,14 @@ color: #555;
 
 .link-container {
   display: flex;
-  justify-content: center; /* Center the buttons horizontally */
-  gap: 10px; /* Adds space between the buttons */
-  margin-top: 20px; /* Add some space between the form and the buttons */
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .profile-picture,
 .profile-info {
-  flex: 1; /* Each child will take up half of the space */
+  flex: 1;
 }
 
 .profile-buttons button:nth-child(1) {

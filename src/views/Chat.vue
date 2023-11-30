@@ -38,7 +38,7 @@
             throw new Error('No token found');
           }
   
-          const response = await fetch(`http://localhost:3000/retrieve-messages?friendId=${this.friendId}`, {
+          const response = await fetch(process.env.VUE_APP_API_URL + `/retrieve-messages?friendId=${this.friendId}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -62,7 +62,7 @@
             throw new Error('No token found');
           }
   
-          const response = await fetch(`http://localhost:3000/friend-information/${this.friendId}`, {
+          const response = await fetch(process.env.VUE_APP_API_URL + `/friend-information/${this.friendId}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -86,7 +86,7 @@
         const token = localStorage.getItem('token');
         if (!this.newMessage.trim()) return;
         try {
-          const response = await fetch(`http://localhost:3000/send-message`, {
+          const response = await fetch(process.env.VUE_APP_API_URL + `/send-message`, {
             method: 'POST',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -102,8 +102,8 @@
             throw new Error('Network response was not ok');
           }
   
-          this.newMessage = ''; // Clear the input field
-          this.retrieveMessages(); // Refresh messages
+          this.newMessage = ''; 
+          this.retrieveMessages();
         } catch (error) {
           console.error('Error sending message:', error);
         }
